@@ -226,8 +226,11 @@ header {
 .preview-pane {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* Use explicit flex-start alignment + margin: auto on child for safe centering */
+  /* This prevents clipping of large diagrams while centering small ones */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 2rem; /* Consistent padding around the content */
   background-color: var(--bg-dark);
   position: relative;
   overflow: auto;
@@ -236,12 +239,22 @@ header {
   background-size: 20px 20px;
 }
 
+.preview-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+  align-self: center;
+}
+
 /* Mermaid SVG styling override to safeguard visibility */
 .mermaid {
   /* Remove fixed width/height so it can expand in the scroll container */
-  /* Use margin: auto to center when smaller than viewport, but scroll when larger */
+  /* Margin: auto handles centering within the flex-start container */
   margin: auto;
-  padding: 2rem; /* Add some padding around the diagram */
+  /* Padding inside the diagram container itself (optional, but good for export) */
+  padding: 0;
   min-width: min-content;
   min-height: min-content;
   display: flex;
