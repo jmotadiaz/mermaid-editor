@@ -197,55 +197,127 @@ header {
   border-right: 1px solid var(--border-color) !important;
 }
 
-/* Scrollbars */
+/* Custom Scrollbars - Global */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  border-radius: 3px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  background-clip: padding-box;
 }
 
-[data-theme="light"] .preview-pane {
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Custom Scrollbars - Preview Container */
+.preview-container::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.preview-container::-webkit-scrollbar-track {
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 3px;
+  margin: 2px;
+}
+
+.preview-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  border-radius: 3px;
+}
+
+.preview-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+}
+
+/* Custom Scrollbars - Editor Pane */
+.editor-pane ::-webkit-scrollbar,
+#editor-container ::-webkit-scrollbar,
+.cm-scroller::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.editor-pane ::-webkit-scrollbar-track,
+#editor-container ::-webkit-scrollbar-track,
+.cm-scroller::-webkit-scrollbar-track {
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 3px;
+}
+
+.editor-pane ::-webkit-scrollbar-thumb,
+#editor-container ::-webkit-scrollbar-thumb,
+.cm-scroller::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  border-radius: 3px;
+}
+
+.editor-pane ::-webkit-scrollbar-thumb:hover,
+#editor-container ::-webkit-scrollbar-thumb:hover,
+.cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+}
+
+/* Light theme scrollbars */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .preview-container::-webkit-scrollbar-thumb,
+[data-theme="light"] .editor-pane ::-webkit-scrollbar-thumb {
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .preview-container {
   background-image: none;
   background-color: #ffffff;
-  border-left: 1px solid var(--border-color);
+  /* border-left moved to pane */
 }
 
-/* Preview Pane */
+/* Preview Pane (Wrapper for Header + Content) */
 .preview-pane {
   flex: 1;
   display: flex;
-  /* Use explicit flex-start alignment + margin: auto on child for safe centering */
-  /* This prevents clipping of large diagrams while centering small ones */
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 2rem; /* Consistent padding around the content */
+  flex-direction: column; /* Stack Header and Container */
   background-color: var(--bg-dark);
   position: relative;
-  overflow: auto;
+  overflow: hidden; /* Parent doesn't scroll */
+  border-left: 1px solid var(--border-color); /* Border stays on pane */
+}
+
+/* Preview Container (Scrollable Area) */
+.preview-container {
+  flex: 1;
+  display: flex;
+  /* Use explicit flex-start alignment + margin: auto on child for safe centering */
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 2rem; /* Consistent padding */
+  overflow: auto; /* Scroll happens here */
+  width: 100%;
+
   /* Dot Matrix / Grid Background */
   background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
   background-size: 20px 20px;
-}
-
-.preview-container {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  justify-self: center;
-  align-self: center;
 }
 
 /* Mermaid SVG styling override to safeguard visibility */
