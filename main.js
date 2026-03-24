@@ -58,6 +58,12 @@ const downloadBtn = document.getElementById('downloadBtn');
 const copyBtn = document.getElementById('copyBtn');
 const themeBtn = document.getElementById('themeBtn');
 
+// Zoom Elements
+const zoomInBtn = document.getElementById('zoomInBtn');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const zoomResetBtn = document.getElementById('zoomResetBtn');
+const zoomLevelText = document.getElementById('zoomLevel');
+
 // Default State
 const DEFAULT_CODE = `graph TD
   A[Start] --> B{Is it working?}
@@ -69,6 +75,7 @@ const DEFAULT_CODE = `graph TD
 // Load from Session Storage
 let currentTheme = sessionStorage.getItem('mermaid-theme') || 'default';
 let savedCode = sessionStorage.getItem('mermaid-code') || DEFAULT_CODE;
+let currentZoom = 1;
 
 let editorView;
 let timeoutId = null;
@@ -80,6 +87,7 @@ applyGlobalTheme(currentTheme);
 initializeMermaid(currentTheme);
 initializeEditor();
 updateThemeButton();
+initializeZoom();
 renderDiagram();
 
 function applyGlobalTheme(theme) {
@@ -203,6 +211,9 @@ async function renderDiagram() {
     const { svg } = await mermaid.render(id, code);
     outputDiv.innerHTML = svg;
 
+    // Apply current zoom to the new SVG
+    applyZoom();
+
     // Remove error class if previously added
     outputDiv.classList.remove('error');
 
@@ -222,6 +233,42 @@ async function renderDiagram() {
     // but since we are manually rendering, we catch the exception.
     outputDiv.innerHTML = '';
     outputDiv.appendChild(errorDiv);
+  }
+}
+
+function initializeZoom() {
+  zoomInBtn.addEventListener('click', () => {
+    updateZoom(currentZoom + 0.1);
+  });
+
+  zoomOutBtn.addEventListener('click', () => {
+    updateZoom(currentZoom - 0.1);
+  });
+
+  zoomResetBtn.addEventListener('click', () => {
+    updateZoom(1);
+  });
+
+  // Mouse wheel zoom
+  previewContainer.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      updateZoom(currentZoom + delta);
+    }
+  }, { passive: false });
+}
+
+function updateZoom(newZoom) {
+  currentZoom = Math.max(0.1, newZoom);
+  zoomLevelText.textContent = `${Math.round(currentZoom * 100)}%`;
+  applyZoom();
+}
+
+function applyZoom() {
+  const svg = outputDiv.querySelector('svg');
+  if (svg) {
+    svg.style.transform = `scale(${currentZoom})`;
   }
 }
 

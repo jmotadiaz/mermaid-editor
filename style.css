@@ -345,3 +345,69 @@ header {
 .error-icon {
     color: #ef4444;
 }
+
+/* Zoom Controls */
+.zoom-controls {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.zoom-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.zoom-btn:active {
+  transform: translateY(0);
+}
+
+#zoomLevel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 45px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Ensure Mermaid SVG scales from center and has enough space */
+#graph-output svg {
+  transform-origin: center center;
+  transition: transform 0.2s ease-out;
+  max-width: none !important; /* Allow it to be larger than container */
+}
+
+[data-theme="light"] .zoom-controls {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .zoom-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--text-main);
+}
