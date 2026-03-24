@@ -5,7 +5,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 3004"
+    "preview": "vite preview --port 3004 --host 0.0.0.0"
   },
   "devDependencies": {
     "vite": "^6.0.0"
