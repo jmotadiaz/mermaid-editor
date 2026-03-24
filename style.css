@@ -335,10 +335,71 @@ header {
 }
 
 /* Actions Header Buttons */
-.actions {
+.actions, .view-controls {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: center;
+}
+
+.view-controls {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.3rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.view-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.view-btn.active {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="light"] .view-controls {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .view-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Layout Modes */
+.editor-grid.view-code {
+  grid-template-columns: 1fr 0fr;
+}
+
+.editor-grid.view-code .preview-pane {
+  display: none;
+}
+
+.editor-grid.view-chart {
+  grid-template-columns: 0fr 1fr;
+}
+
+.editor-grid.view-chart .editor-pane {
+  display: none;
+}
+
+.editor-grid.view-chart .preview-pane {
+  border-left: none;
 }
 
 /* Error state styling if mermaid returns error (it often injects an svg) */

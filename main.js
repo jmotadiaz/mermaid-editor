@@ -58,6 +58,12 @@ const downloadBtn = document.getElementById('downloadBtn');
 const copyBtn = document.getElementById('copyBtn');
 const themeBtn = document.getElementById('themeBtn');
 
+// View Mode Elements
+const viewCodeBtn = document.getElementById('viewCodeBtn');
+const viewSplitBtn = document.getElementById('viewSplitBtn');
+const viewChartBtn = document.getElementById('viewChartBtn');
+const editorGrid = document.querySelector('.editor-grid');
+
 // Zoom Elements
 const zoomInBtn = document.getElementById('zoomInBtn');
 const zoomOutBtn = document.getElementById('zoomOutBtn');
@@ -75,6 +81,7 @@ const DEFAULT_CODE = `graph TD
 // Load from Session Storage
 let currentTheme = sessionStorage.getItem('mermaid-theme') || 'default';
 let savedCode = sessionStorage.getItem('mermaid-code') || DEFAULT_CODE;
+let currentViewMode = sessionStorage.getItem('mermaid-view-mode') || 'split';
 let currentZoom = 1;
 
 let editorView;
@@ -88,6 +95,7 @@ initializeMermaid(currentTheme);
 initializeEditor();
 updateThemeButton();
 initializeZoom();
+initializeViewModes();
 renderDiagram();
 
 function applyGlobalTheme(theme) {
@@ -233,6 +241,50 @@ async function renderDiagram() {
     // but since we are manually rendering, we catch the exception.
     outputDiv.innerHTML = '';
     outputDiv.appendChild(errorDiv);
+  }
+}
+
+function initializeViewModes() {
+  const modes = {
+    code: viewCodeBtn,
+    split: viewSplitBtn,
+    chart: viewChartBtn
+  };
+
+  Object.entries(modes).forEach(([mode, btn]) => {
+    btn.addEventListener('click', () => {
+      setViewMode(mode);
+    });
+  });
+
+  // Apply initial mode
+  setViewMode(currentViewMode);
+}
+
+function setViewMode(mode) {
+  currentViewMode = mode;
+  sessionStorage.setItem('mermaid-view-mode', mode);
+
+  // Update classes on grid
+  editorGrid.classList.remove('view-code', 'view-split', 'view-chart');
+  if (mode !== 'split') {
+    editorGrid.classList.add(`view-${mode}`);
+  }
+
+  // Update button active state
+  [viewCodeBtn, viewSplitBtn, viewChartBtn].forEach(btn => btn.classList.remove('active'));
+  if (mode === 'code') viewCodeBtn.classList.add('active');
+  else if (mode === 'split') viewSplitBtn.classList.add('active');
+  else if (mode === 'chart') viewChartBtn.classList.add('active');
+
+  // Trigger editor refresh if needed
+  if (editorView && (mode === 'code' || mode === 'split')) {
+    editorView.requestMeasure();
+  }
+
+  // If switching to chart or split, ensure diagram is visible/rendered
+  if (mode === 'chart' || mode === 'split') {
+    renderDiagram();
   }
 }
 
