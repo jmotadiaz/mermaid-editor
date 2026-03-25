@@ -510,11 +510,13 @@ header {
   }
 
   .editor-grid.view-code {
-    grid-template-rows: 1fr 0fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
   }
 
   .editor-grid.view-chart {
-    grid-template-rows: 0fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
   }
 
   .pane-header {
