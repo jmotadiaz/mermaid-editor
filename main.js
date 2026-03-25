@@ -57,6 +57,8 @@ const outputDiv = document.getElementById('graph-output');
 const downloadBtn = document.getElementById('downloadBtn');
 const copyBtn = document.getElementById('copyBtn');
 const themeBtn = document.getElementById('themeBtn');
+const menuToggle = document.getElementById('menuToggle');
+const navActions = document.getElementById('navActions');
 
 // View Mode Elements
 const viewCodeBtn = document.getElementById('viewCodeBtn');
@@ -96,6 +98,7 @@ initializeEditor();
 updateThemeButton();
 initializeZoom();
 initializeViewModes();
+initializeMenu();
 renderDiagram();
 
 function applyGlobalTheme(theme) {
@@ -180,7 +183,34 @@ function onCodeChange(code) {
 
 function updateThemeButton() {
   const isDark = currentTheme === 'dark';
-  themeBtn.innerHTML = isDark ? `${ICONS.sun} Light Mode` : `${ICONS.moon} Dark Mode`;
+  themeBtn.innerHTML = isDark ? `${ICONS.sun} <span>Light Mode</span>` : `${ICONS.moon} <span>Dark Mode</span>`;
+}
+
+function initializeMenu() {
+  menuToggle.addEventListener('click', () => {
+    navActions.classList.toggle('show');
+  });
+
+  // Close menu when clicking any action button (on mobile)
+  navActions.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768 && (e.target.closest('.view-btn') || e.target.closest('.btn'))) {
+      navActions.classList.remove('show');
+    }
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (navActions.classList.contains('show') && !menuToggle.contains(e.target) && !navActions.contains(e.target)) {
+      navActions.classList.remove('show');
+    }
+  });
+
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      navActions.classList.remove('show');
+    }
+  });
 }
 
 // Theme Toggle
@@ -408,7 +438,7 @@ copyBtn.addEventListener('click', async () => {
 
         // Show temporary feedback
         const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
+        copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>Copied!</span>`;
         setTimeout(() => {
             copyBtn.innerHTML = originalText;
         }, 2000);

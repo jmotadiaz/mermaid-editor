@@ -68,6 +68,25 @@ header {
   padding: 0 2rem;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-panel);
+  position: relative; /* For absolutely positioned actions on mobile */
+  z-index: 100;
+}
+
+.menu-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .logo h1 {
@@ -79,6 +98,7 @@ header {
 .highlight {
   background: var(--primary-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: 0.2rem;
 }
@@ -471,4 +491,98 @@ header {
   background: rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.1);
   color: var(--text-main);
+}
+
+@media (max-width: 900px) {
+  .editor-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: calc(100vh - 70px);
+  }
+
+  .editor-pane {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .preview-pane {
+    border-left: none;
+  }
+
+  .editor-grid.view-code {
+    grid-template-rows: 1fr 0fr;
+  }
+
+  .editor-grid.view-chart {
+    grid-template-rows: 0fr 1fr;
+  }
+
+  .pane-header {
+    padding: 0.8rem 1.2rem;
+  }
+
+  .preview-container {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 0 1.5rem;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .actions {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: var(--bg-dark);
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    z-index: 99;
+  }
+
+  .actions.show {
+    display: flex;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .view-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem;
+  }
+
+  .btn span {
+    display: inline; /* Ensure text is visible in the dropdown */
+  }
+
+  .logo h1 {
+    font-size: 1.25rem;
+  }
 }
