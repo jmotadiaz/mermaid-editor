@@ -240,8 +240,7 @@ async function renderDiagram() {
   const code = editorView ? editorView.state.doc.toString() : savedCode;
 
   try {
-    const isValid = await mermaid.parse(code);
-    if (!isValid) return; // Mermaid parse will throw if invalid usually, but this is a double check logic if they change API
+    await mermaid.parse(code);
 
     // We need to use a unique ID for each render or clear the div
     outputDiv.innerHTML = '';
