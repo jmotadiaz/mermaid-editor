@@ -420,6 +420,7 @@ header {
 
 .editor-grid.view-chart .preview-pane {
   border-left: none;
+  grid-column: 2;
 }
 
 /* Error state styling if mermaid returns error (it often injects an svg) */
@@ -517,6 +518,10 @@ header {
   .editor-grid.view-chart {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+  }
+
+  .editor-grid.view-chart .preview-pane {
+    grid-column: auto;
   }
 
   .pane-header {
